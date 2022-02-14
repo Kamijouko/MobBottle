@@ -1,14 +1,21 @@
 package firis.mobbottle.common.item;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.annotation.Nullable;
+
+import gvclib.entity.living.EntityGVCLivingBase;
+import net.minecraft.entity.helpful.EntityFriendlyCreature;
 
 import firis.mobbottle.MobBottle.FirisItems;
 import firis.mobbottle.common.config.FirisConfig;
 import firis.mobbottle.common.entity.FEntityItemAntiDamage;
 import firis.mobbottle.common.helpler.EntityLivingHelper;
 import firis.mobbottle.common.tileentity.FTileEntityMobBottle;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
@@ -16,9 +23,12 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.MultiPartEntityPart;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.passive.EntityTameable;
+import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -32,6 +42,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import com.google.common.base.Optional;
+
 /**
  * モブボトル
  */
@@ -44,26 +56,59 @@ public class FItemMobBottle extends ItemBlock {
 		super(block);
 		this.setMaxStackSize(16);
 	}
-	
+
+	public boolean entityIsItemable(EntityPlayer player, Entity entity){
+		if (entity instanceof EntityGVCLivingBase){
+			//DollFrontLine Entity
+			EntityGVCLivingBase creature = (EntityGVCLivingBase)entity;
+			if (creature.getOwner() == player){
+				return true;
+			}
+		}
+		else if (entity instanceof EntityFriendlyCreature){
+			//Engender Entity
+			EntityFriendlyCreature creature = (EntityFriendlyCreature)entity;
+			if (creature.hasOwner(player) && creature.getOwner() == player){
+				return true;
+			}
+		}
+		else if (entity instanceof EntityTameable){
+			EntityTameable tameable = (EntityTameable)entity;
+			if (tameable.isTamed() && tameable.isOwner(player)){
+				return true;
+			}
+		}
+		else if ((entity instanceof EntityLiving) && !(entity instanceof EntityVillager) && !((EntityLiving)entity).getLeashed()){
+			return true;
+		}
+		return false;
+	}
+
 	/**
-	 * 左クリックからのアイテム化
+	 * Shift＋左クリックからのアイテム化
 	 */
 	@Override
 	public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity)
     {
-		//Mobアイテム化
-		return createEntityItemStack(stack, EnumHand.MAIN_HAND, player, entity);
+		if (player.isSneaking()){
+			if (entityIsItemable(player, entity)){
+				//Mobアイテム化
+				return createEntityItemStack(stack, EnumHand.MAIN_HAND, player, entity);
+			}
+		}
+		return false;
     }
-	
+
 	/**
 	 * Shift＋右クリックからのアイテム化
-	 */
+	 *
 	@Override
-	public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer playerIn, EntityLivingBase target, EnumHand hand)
-    {
+	public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer player, EntityLivingBase entity, EnumHand hand)
+	{
+
 		//Mobアイテム化
-		return createEntityItemStack(stack, hand, playerIn, target);
-    }
+		return createEntityItemStack(stack, hand, player, entity);
+    }*/
 	
 	/**
 	 * Mobを生成する

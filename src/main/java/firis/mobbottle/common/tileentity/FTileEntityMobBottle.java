@@ -7,8 +7,8 @@ import firis.mobbottle.MobBottle.FirisBlocks;
 import firis.mobbottle.common.config.FirisConfig;
 import firis.mobbottle.common.helpler.EntityLivingHelper;
 import firis.mobbottle.common.helpler.VanillaNetworkHelper;
-import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
-import net.blacklab.lmr.util.EnumMaidMotion;
+//import net.blacklab.lmr.entity.littlemaid.EntityLittleMaid;
+//import net.blacklab.lmr.util.EnumMaidMotion;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLiving;
@@ -337,7 +337,7 @@ public class FTileEntityMobBottle extends AbstractTileEntity implements ITickabl
 		//関係ないMobの場合も更新されるが特に影響はないので問題ないと判断する
 		
 		//次モーションのIDを取得する
-		this.lmrfpMaidMotion = EnumMaidMotion.getMaidMotionFromId(lmrfpMaidMotion).next().getId();
+		//this.lmrfpMaidMotion = EnumMaidMotion.getMaidMotionFromId(lmrfpMaidMotion).next().getId();
 		
 		//Noneの場合は飛ばす
 		if (this.lmrfpMaidMotion == 0) this.lmrfpMaidMotion = 1;
@@ -356,7 +356,7 @@ public class FTileEntityMobBottle extends AbstractTileEntity implements ITickabl
 		if (!FirisConfig.cfg_general_enable_lmrfp_collaboration) return;
 		
 		//Entityがメイドさんの場合のみ処理を行う
-		if (this.renderEntityLiving instanceof EntityLittleMaid) {
+		/*if (this.renderEntityLiving instanceof EntityLittleMaid) {
 			EntityLittleMaid entityMaid = (EntityLittleMaid) this.renderEntityLiving;
 			
 			//視線をリセット
@@ -369,6 +369,6 @@ public class FTileEntityMobBottle extends AbstractTileEntity implements ITickabl
 			EnumMaidMotion motion = EnumMaidMotion.getMaidMotionFromId(this.lmrfpMaidMotion);
 			entityMaid.setMaidMotion(motion);
 			
-		}
+		}*/
 	}
 }
