@@ -11,7 +11,7 @@ MobBottle
 - 为方便多人模式饲养实体，不可捕获被绳子拴住的实体。例如被绳子拴住的牛将不可被捕获；  
 - 村民被设置为不可捕获实体（包括桃花源记（TekTopia）mod的村民和虚拟人生（MinecraftComesAlive）mod的村民，都为不可捕获实体）；  
 - 上述以外的实体均可被捕获；  
-- 有部分服务器领地插件不能识别MobBottle与领地内实体的交互，导致领地内的实体被转移，由此添加了上述功能；  
+- 有部分服务器领地插件不能识别MobBottle与领地内实体的交互，导致领地内的实体被他人转移，由此添加了上述功能；  
 - 本模组归[firis-games](https://github.com/firis-games)所有。
 - [MobBottle-Original](https://github.com/firis-games/MobBottle)
 ---
