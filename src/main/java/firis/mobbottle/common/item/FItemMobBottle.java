@@ -1,12 +1,15 @@
 package firis.mobbottle.common.item;
 
 import java.util.List;
-import java.util.UUID;
 
 import javax.annotation.Nullable;
 
 import gvclib.entity.living.EntityGVCLivingBase;
 import net.minecraft.entity.helpful.EntityFriendlyCreature;
+import net.tangotek.tektopia.entities.EntityVillageNavigator;
+import com.minecolonies.api.colony.IColonyManager;
+import com.minecolonies.api.colony.ICitizenData;
+import com.minecolonies.api.entity.citizen.AbstractEntityCitizen;
 
 import firis.mobbottle.MobBottle.FirisItems;
 import firis.mobbottle.common.config.FirisConfig;
@@ -42,8 +45,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import com.google.common.base.Optional;
-
 /**
  * モブボトル
  */
@@ -58,7 +59,17 @@ public class FItemMobBottle extends ItemBlock {
 	}
 
 	public boolean entityIsItemable(EntityPlayer player, Entity entity){
-		if (entity instanceof EntityGVCLivingBase){
+		if (entity instanceof EntityTameable){
+			EntityTameable tameable = (EntityTameable)entity;
+			if (tameable.isTamed() && tameable.isOwner(player)){
+				return true;
+			}
+		}
+		else if (entity instanceof EntityVillageNavigator){
+			//Tektopia Entity
+			return false;
+		}
+		else if (entity instanceof EntityGVCLivingBase){
 			//DollFrontLine Entity
 			EntityGVCLivingBase creature = (EntityGVCLivingBase)entity;
 			if (creature.getOwner() == player){
@@ -72,9 +83,12 @@ public class FItemMobBottle extends ItemBlock {
 				return true;
 			}
 		}
-		else if (entity instanceof EntityTameable){
-			EntityTameable tameable = (EntityTameable)entity;
-			if (tameable.isTamed() && tameable.isOwner(player)){
+		else if (entity instanceof AbstractEntityCitizen){
+			//MineColonies Entity
+			AbstractEntityCitizen citizen = (AbstractEntityCitizen)entity;
+			ICitizenData citizenData = citizen.getCitizenData();
+			IColonyManager colonyManager = IColonyManager.getInstance();
+			if (citizenData.getColony() != null && citizenData.getColony() == colonyManager.getIColonyByOwner(citizenData.getColony().getWorld(), player)){
 				return true;
 			}
 		}
