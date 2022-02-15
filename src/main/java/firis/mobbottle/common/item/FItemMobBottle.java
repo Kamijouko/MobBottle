@@ -59,11 +59,15 @@ public class FItemMobBottle extends ItemBlock {
 	}
 
 	public boolean entityIsItemable(EntityPlayer player, Entity entity){
+
 		if (entity instanceof EntityTameable){
 			EntityTameable tameable = (EntityTameable)entity;
 			if (tameable.isTamed() && tameable.isOwner(player)){
 				return true;
 			}
+		}
+		else if (entity instanceof EntityVillager){
+			return false;
 		}
 		else if (entity instanceof EntityVillageNavigator){
 			//Tektopia Entity
@@ -92,7 +96,10 @@ public class FItemMobBottle extends ItemBlock {
 				return true;
 			}
 		}
-		else if ((entity instanceof EntityLiving) && !(entity instanceof EntityVillager) && !((EntityLiving)entity).getLeashed()){
+		else if ((entity instanceof EntityLiving) && ((EntityLiving)entity).getLeashed()){
+			return false;
+		}
+		else{
 			return true;
 		}
 		return false;
