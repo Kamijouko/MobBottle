@@ -12,7 +12,8 @@ MobBottle
 - 村民被设置为不可捕获实体（包括桃花源记（TekTopia）mod的村民和虚拟人生（MinecraftComesAlive）mod的村民，都为不可捕获实体）；  
 - 上述以外的实体均可被捕获；  
 - 以上功能是由于部分服务器领地插件不能识别生物展示瓶与领地内实体的交互，导致在不属于自己的领地也能捕获到实体，由此添加上述功能；  
-- 本模组版权归“firis-games”所有。
+- 本模组版权归[firis-games](https://github.com/firis-games)所有。
+- [MobBottle-Original](https://github.com/firis-games/MobBottle)
 ---
 
 Minecraft1.12.2にちょっとした小物を追加するModです。
